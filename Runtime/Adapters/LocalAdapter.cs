@@ -32,7 +32,7 @@ namespace Audune.Persistence
     }
 
 
-    // Local persistence adapter properties
+    // Local persistence adapter variables
     [SerializeField, Tooltip("The root location to store files")]
     private DirectoryType _root = DirectoryType.PersistentDataPath;
     [SerializeField, Tooltip("The directory to store files, relative to the directory type")]
@@ -42,7 +42,7 @@ namespace Audune.Persistence
 
 
     // Return if the adapter is accessible
-    public override bool adapterEnabled => true;
+    public override bool adapterEnabled => enabled;
 
     // Return the absolute directory to store files
     public string directory {
@@ -69,12 +69,13 @@ namespace Audune.Persistence
 
 
     // Return the path for the specified source file
-    public string GetPath(string source)
+    private string GetPath(string source)
     {
       return Path.Combine(directory, $"{source}{_extension}");
     }
 
 
+    #region Managing files  
     // List the available files in the adapter
     public override IEnumerable<string> List(Predicate<string> predicate = null)
     {
@@ -189,5 +190,6 @@ namespace Audune.Persistence
         throw new AdapterException($"Could not delete file \"{path}\": {ex.Message}", ex);
       }
     }
+    #endregion
   }
 }

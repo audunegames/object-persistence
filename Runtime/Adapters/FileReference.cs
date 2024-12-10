@@ -8,7 +8,7 @@ namespace Audune.Persistence
   [Serializable]
   public sealed class FileReference : IEquatable<FileReference>
   {
-    // File reference properties
+    // File reference variables
     [SerializeField, Tooltip("The adapter name of the file")]
     private string _adapterName;
     [SerializeField, Tooltip("The path of the file")]
@@ -33,12 +33,11 @@ namespace Audune.Persistence
     // Resolve the file reference
     public File Resolve()
     {
-      var system = UnityEngine.Object.FindObjectOfType<PersistenceSystem>();
-      if (system == null)
+      if (PersistenceSystem.current == null)
         throw new PersistenceException("Could not find a persistence system in the scene");
 
-      if (system.TryGetAdapter(_adapterName, out var adapter))
-        return adapter.GetFile(_path);
+      if (PersistenceSystem.current.TryGetAdapter(_adapterName, out var adapter))
+        return adapter[_path];
       else
         throw new PersistenceException($"Could not find a registered adapter with name \"{_adapterName}\"");
     }

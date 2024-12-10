@@ -8,7 +8,7 @@ namespace Audune.Persistence
   [RequireComponent(typeof(PersistenceSystem))]
   public abstract class Adapter : MonoBehaviour
   {
-    // Adapter properties
+    // Adapter variables
     [SerializeField, Tooltip("The name of the adapter")]
     private string _adapterName = "Adapter";
     [SerializeField, Tooltip("The priority of the adapter")]
@@ -25,6 +25,11 @@ namespace Audune.Persistence
     public abstract bool adapterEnabled { get; }
 
 
+    // Return a persistent file in the adapter
+    public File this[string path] => new File(this, path);
+
+
+    #region Managing files
     // List the available files in the adapter
     public abstract IEnumerable<string> List(Predicate<string> predicate = null);
 
@@ -45,11 +50,6 @@ namespace Audune.Persistence
 
     // Delete the specified file
     public abstract void Delete(string path);
-
-    // Return a persistence file in the adapter
-    public File GetFile(string path)
-    {
-      return new File(this, path);
-    }
+    #endregion
   }
 }

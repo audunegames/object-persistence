@@ -6,7 +6,7 @@ namespace Audune.Persistence
   // Class that defines a persistence file
   public sealed class File : IEquatable<File>
   {
-    // Persistence file properties
+    // File variables
     public readonly Adapter adapter;
     public readonly string path;
 
