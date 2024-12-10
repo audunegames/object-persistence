@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated code to use the separate Object Serialization package.
-- Changed local adapter editor to show a drowdown for the adapter name.
+- Changed file reference to show a dropdown for the adapter name.
 
 ## [0.3.1] - 2024-06-15
 
