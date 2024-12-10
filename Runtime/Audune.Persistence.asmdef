@@ -2,6 +2,7 @@
     "name": "Audune.Persistence",
     "rootNamespace": "Audune.Persistence",
     "references": [
+        "GUID:0f3fef99c0cf235498dc5b53f87cde22",
         "GUID:241edfc528a436d4d8ad77e50bc4b164",
         "GUID:8d3eaed832bf78046bfb9b4fc4d6d44e",
         "GUID:bbde805d927e795439d7a746d1749cab",

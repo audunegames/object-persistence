@@ -1,11 +1,11 @@
 {
   "name": "com.audune.persistence",
-  "displayName": "Persistence",
   "version": "0.3.1",
+  "displayName": "Object Persistence",
   "unity": "2022.3",
-  "description": "Persistent data system for saving games for Unity 2022 LTS or higher.",
-  "documentationUrl": "https://github.com/audunegames/persistence",
-  "changelogUrl": "https://github.com/audunegames/persistence/commits/v0.3.1",
+  "description": "Store serialized data from your components on disk or in the cloud, made for Unity 2022 LTS or higher.",
+  "documentationUrl": "https://github.com/audunegames/object-persistence",
+  "changelogUrl": "https://github.com/audunegames/object-persistence/tree/master/CHANGELOG.md",
   "licensesUrl": "https://www.gnu.org/licenses/gpl-3.0.html",
   "license": "GPL-3.0-or-later",
   "author": {
@@ -14,8 +14,8 @@
     "url": "https://audune.com/"
   },
   "dependencies": {
+    "com.audune.serialization": "1.0.0",
     "com.audune.utils.types": "1.0.0",
-    "com.audune.utils.unityeditor": "2.0.4",
-    "net.tnrd.messagepack": "2.5.125"
+    "com.audune.utils.unityeditor": "2.0.4"
   }
 }

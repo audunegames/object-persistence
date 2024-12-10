@@ -1,4 +1,4 @@
-using Audune.Utils.Types;
+using Audune.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +11,11 @@ namespace Audune.Persistence
   public sealed class PersistenceSystem : MonoBehaviour
   {
     // Persistence system properties
-    [SerializeField, Tooltip("The format of the persistence files"), SerializableTypeOptions(typeof(Backend), TypeDisplayOptions.DontShowNamespace)]
-    private SerializableType _persistenceFileFormat = typeof(Backend).GetChildTypes().FirstOrDefault();
+    //[SerializeField, Tooltip("The format of the persistence files"), SerializableTypeOptions(typeof(Encoder), TypeDisplayOptions.DontShowNamespace)]
+    //private SerializableType _persistenceFileFormat = typeof(Encoder).GetChildTypes().FirstOrDefault();
 
     // Internal state of the persistence system
-    private Backend _backend;
+    private Serializer _pickler;
 
     // Persistence system events
     public event Action<File> OnFileRead;
@@ -29,10 +29,10 @@ namespace Audune.Persistence
     private void Awake()
     {
       // Create the backend
-      if (_persistenceFileFormat.type == null)
-        throw new ArgumentException("Cannot initialize persistence system without a specified format");
+      //if (_persistenceFileFormat.type == null)
+        //throw new ArgumentException("Cannot initialize persistence system without a specified format");
 
-      _backend = Activator.CreateInstance(_persistenceFileFormat) as Backend;
+      _pickler = new Serializer(EncoderType.MessagePack);
     }
 
 
@@ -95,71 +95,66 @@ namespace Audune.Persistence
       return file.Exists();
     }
 
-    // Read a state from the specified file
-    public TState Read<TState>(File file) where TState : State
+    // Read a byte array from the specified file
+    private byte[] ReadData(File file)
     {
-      // Read the data
       var data = file.Read();
-
-      // Deserialize the state
-      var state = _backend.Deserialize(data);
-
-      // Check if the state is the correct type
-      if (state is not TState expectedState)
-        throw new PersistenceException($"Could not cast the state: expected state of type {typeof(TState)} but got {state.GetType()}");
-
-      // Invoke the read event
       OnFileRead?.Invoke(file);
-
-      // Return the state
-      return expectedState;
+      return data;
     }
 
-    // Read a deserializable object from the specified file into an existing object
-    public void Read<TState>(File file, IDeserializable<TState> deserializable) where TState : State
+    // Read a state from the specified file
+    public State Read<TState>(File file)
     {
-      var state = Read<TState>(file);
-      deserializable.Deserialize(state);
+      var data = ReadData(file);
+      return _pickler.DecodeState(data);
+    }
+
+    /*// Read a deserializable object from the specified file into an existing object
+    public void Read<TState>(File file, IPicklable<TState> deserializable) where TState : State
+    {
+      var data = ReadData(file);
+      _pickler.Decode(data, deserializable);
     }
 
     // Read a deserializable object from the specified file into an existing object with the provided context
-    public void Read<TState, TContext>(File file, IDeserializable<TState, TContext> deserializable, TContext context) where TState : State
+    public void Read<TState, TContext>(File file, ISerializable<TState, TContext> deserializable, TContext context) where TState : State
     {
-      var state = Read<TState>(file);
-      deserializable.Deserialize(state, context);
+      var data = ReadData(file);
+      _pickler.Decode(data, deserializable, context);
+    }*/
+
+    // Write the specified data to the specified file
+    public void WriteData(File file, byte[] data)
+    {
+      file.Write(data);
+      OnFileWritten?.Invoke(file);
     }
 
     // Write the specified state to the specified file
     public void Write(File file, State state)
     {
-      // Serialize the state
-      var data = _backend.Serialize(state);
-
-      // Write the data
-      file.Write(data);
-
-      // Invoke the written event
-      OnFileWritten?.Invoke(file);
+      var data = _pickler.EncodeState(state);
+      WriteData(file, data);
     }
 
-    // Write the specified serializable object to the specified file
-    public void Write<TState>(File file, ISerializable<TState> serializable) where TState : State
+    /*// Write the specified serializable object to the specified file
+    public void Write<TState>(File file, IPicklable<TState> serializable) where TState : State
     {
-      var state = serializable.Serialize();
-      Write(file, state);
+      var data = _pickler.Encode(serializable);
+      WriteData(file, data);
     }
 
     // Write the specified serializable object to the specified file with the provided context
     public void Write<TState, TContext>(File file, ISerializable<TState, TContext> serializable, TContext context) where TState : State
     {
-      var state = serializable.Serialize(context);
-      Write(file, state);
-    }
+      var data = _pickler.Encode(serializable, context);
+      WriteData(file, data);
+    }*/
 
     // Move the specified file to a new destination file
     public void Move(File file, File destination)
     {
-      // Move the file
       if (file.adapter == destination.adapter)
       {
         file.Move(destination.path);
@@ -171,14 +166,12 @@ namespace Audune.Persistence
         file.Delete();
       }
 
-      // Invoke the moved event
       OnFileMoved?.Invoke(file, destination);
     }
 
     // Copy the specified file to a new destination file
     public void Copy(File file, File destination)
     {
-      // Copy the file
       if (file.adapter == destination.adapter)
       {
         file.Move(destination.path);
@@ -189,17 +182,13 @@ namespace Audune.Persistence
         destination.Write(data);
       }
 
-      // Invoke the copied event
       OnFileCopied?.Invoke(file, destination);
     }
 
     // Delete the specified source file
     public void Delete(File source)
     {
-      // Delete the file
       source.Delete();
-
-      // Invoke the deleted event
       OnFileDeleted?.Invoke(source);
     }
     #endregion
