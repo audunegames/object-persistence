@@ -11,11 +11,11 @@ namespace Audune.Persistence
   public sealed class PersistenceSystem : MonoBehaviour
   {
     // Persistence system properties
-    //[SerializeField, Tooltip("The format of the persistence files"), SerializableTypeOptions(typeof(Encoder), TypeDisplayOptions.DontShowNamespace)]
-    //private SerializableType _persistenceFileFormat = typeof(Encoder).GetChildTypes().FirstOrDefault();
+    [SerializeField, Tooltip("The format of the persistence files")]
+    private EncoderType _persistenceFileFormat = EncoderType.MessagePack;
 
     // Internal state of the persistence system
-    private Serializer _pickler;
+    private Serializer _serializer;
 
     // Persistence system events
     public event Action<File> OnFileRead;
@@ -28,11 +28,8 @@ namespace Audune.Persistence
     // Awake is called when the script instance is being loaded
     private void Awake()
     {
-      // Create the backend
-      //if (_persistenceFileFormat.type == null)
-        //throw new ArgumentException("Cannot initialize persistence system without a specified format");
-
-      _pickler = new Serializer(EncoderType.MessagePack);
+      // Create the serializer
+      _serializer = new Serializer(_persistenceFileFormat);
     }
 
 
@@ -107,7 +104,7 @@ namespace Audune.Persistence
     public State Read<TState>(File file)
     {
       var data = ReadData(file);
-      return _pickler.DecodeState(data);
+      return _serializer.DecodeState(data);
     }
 
     /*// Read a deserializable object from the specified file into an existing object
@@ -134,7 +131,7 @@ namespace Audune.Persistence
     // Write the specified state to the specified file
     public void Write(File file, State state)
     {
-      var data = _pickler.EncodeState(state);
+      var data = _serializer.EncodeState(state);
       WriteData(file, data);
     }
 

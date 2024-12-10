@@ -40,6 +40,9 @@ namespace Audune.Persistence.Editor
     // Draw the inspector GUI
     public override void OnInspectorGUI()
     {
+      serializedObject.Update();
+      EditorGUI.BeginChangeCheck();
+
       _settingsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_settingsFoldout, "Settings");
       if (_settingsFoldout)
       {
@@ -54,17 +57,17 @@ namespace Audune.Persistence.Editor
       {
         var adapters = target.GetAdapters().ToList();
         if (adapters.Count > 0)
-          EditorGUILayout.HelpBox(string.Join("\n", adapters.Select(a => $"• {a.GetType().ToDisplayString(TypeDisplayOptions.DontShowNamespace)} \"{a.adapterName}\" [Priority {a.adapterPriority}]")), MessageType.None);
+          EditorGUILayout.HelpBox(string.Join("\n", adapters.Select(a => $"â€¢ {a.GetType().ToDisplayString(TypeDisplayOptions.DontShowNamespace)} \"{a.adapterName}\" [Priority {a.adapterPriority}]")), MessageType.None);
         else
           EditorGUILayout.HelpBox("None", MessageType.None);
 
         var emptyAdapterNames = adapters.Where(a => string.IsNullOrEmpty(a.adapterName)).ToList();
         if (emptyAdapterNames.Count > 0)
-          EditorGUILayout.HelpBox($"Warning - The following adapters have no name:\n{string.Join("\n", emptyAdapterNames.Select(a => $"• {a.GetType().ToDisplayString(TypeDisplayOptions.DontShowNamespace)}"))}", MessageType.None);
+          EditorGUILayout.HelpBox($"Warning - The following adapters have no name:\n{string.Join("\n", emptyAdapterNames.Select(a => $"ï¿½ {a.GetType().ToDisplayString(TypeDisplayOptions.DontShowNamespace)}"))}", MessageType.None);
 
         var duplicatedAdapterNames = adapters.GroupBy(a => a.adapterName).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
         if (duplicatedAdapterNames.Count > 0)
-          EditorGUILayout.HelpBox($"Warning - The following adapter names are duplicated:\n{string.Join("\n", duplicatedAdapterNames.Select(n => $"• \"{n}\""))}", MessageType.None);
+          EditorGUILayout.HelpBox($"Warning - The following adapter names are duplicated:\n{string.Join("\n", duplicatedAdapterNames.Select(n => $"ï¿½ \"{n}\""))}", MessageType.None);
 
         EditorGUILayout.Space();
       }
@@ -78,6 +81,9 @@ namespace Audune.Persistence.Editor
         EditorGUIExtensions.GenericMenuDropdown(addAdapterPosition, new GUIContent("(select)"), _adapterTypesMenu);
       }
       EditorGUILayout.EndFoldoutHeaderGroup();
+
+      if (EditorGUI.EndChangeCheck())
+        serializedObject.ApplyModifiedProperties();
     }
   }
 }

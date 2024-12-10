@@ -1,4 +1,3 @@
-using Audune.Utils.UnityEditor.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,18 +40,22 @@ namespace Audune.Persistence
       serializedObject.Update();
       EditorGUI.BeginChangeCheck();
 
+      EditorGUILayout.PropertyField(_adapterName, new GUIContent("Name", "The name of the adapter"));
+
+      EditorGUILayout.Space();
+
       _adapterSettingsFoldout = EditorGUILayout.BeginFoldoutHeaderGroup(_adapterSettingsFoldout, "Adapter Settings");
       if (_adapterSettingsFoldout)
       {
-        EditorGUILayout.PropertyField(_adapterName, new GUIContent("Name", "The name of the adapter"));
-
-        EditorGUILayout.Space();
-
         EditorGUILayout.PropertyField(_root);
         EditorGUILayout.PropertyField(_directory);
         EditorGUILayout.PropertyField(_extension);
 
+        EditorGUILayout.Space();
+
         EditorGUILayout.HelpBox($"Files are saved to {target.directory}", MessageType.None);
+        if (GUILayout.Button("Show in explorer"))
+          EditorUtility.RevealInFinder(target.directory);
 
         EditorGUILayout.Space();
       }

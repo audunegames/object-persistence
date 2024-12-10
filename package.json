@@ -16,6 +16,6 @@
   "dependencies": {
     "com.audune.serialization": "1.0.0",
     "com.audune.utils.types": "1.0.0",
-    "com.audune.utils.unityeditor": "2.0.4"
+    "com.audune.utils.unityeditor": "2.0.6"
   }
 }
