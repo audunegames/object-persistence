@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2024-12-10
 
+### Added
+
+- The persistence system can now be accessed using a static instance field.
+
 ### Changed
 
-- Added static instance to the persistence system.
 - Updated code to use the separate Object Serialization package.
 - Changed local adapter editor to show a drowdown for the adapter name.
 
