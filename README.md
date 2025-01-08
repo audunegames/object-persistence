@@ -20,9 +20,9 @@ See the [wiki](https://github.com/audunegames/object-persistence/wiki) of the re
 
 This package depends on the following packages:
 
-* [Serializable Types](https://openupm.com/packages/com.audune.utils.types/), version **1.0.0** or higher.
-* [Unity IMGUI Editor Utilities](https://openupm.com/packages/com.audune.utils.unityeditor/), version **2.0.4** or higher.
-* [MessagePack](https://openupm.com/packages/net.tnrd.messagepack/), version **2.5.125** or higher.
+* [Serializable Types](https://openupm.com/packages/com.audune.utils.types/), version **1.0.2** or higher.
+* [Object Serialization](https://openupm.com/packages/com.audune.serialization/), version **1.0.3** or higher.
+* [Unity IMGUI Editor Utilities](https://openupm.com/packages/com.audune.utils.unityeditor/), version **2.0.7** or higher.
 
 If you're installing the required packages from the [OpenUPM registry](https://openupm.com/), make sure to add a scoped registry with the URL `https://package.openupm.com` and the required scopes before installing the packages.
 
