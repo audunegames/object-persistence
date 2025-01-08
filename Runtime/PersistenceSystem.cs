@@ -45,10 +45,21 @@ namespace Audune.Persistence
     private void Awake()
     {
       // Set the static instance
-      _current = this;
+      if (_current == null)
+        _current = this;
+      else
+        Destroy(gameObject);
       
       // Create the serializer
       _serializer = new Serializer(_persistenceFileFormat);
+    }
+
+    // OnDestroy is called when the component will be destroyed
+    private void OnDestroy()
+    {
+      // Reset the static instancce
+      if ((object)_current == this)
+        _current = null;
     }
 
 
