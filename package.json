@@ -1,7 +1,7 @@
 {
   "name": "com.audune.persistence",
   "displayName": "Object Persistence",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "unity": "2022.3",
   "description": "Store serialized data from your components on disk or in the cloud, made for Unity 2022 LTS or higher.",
   "documentationUrl": "https://github.com/audunegames/object-persistence",
@@ -14,7 +14,7 @@
     "url": "https://audune.com/"
   },
   "dependencies": {
-    "com.audune.serialization": "1.0.2",
+    "com.audune.serialization": "1.0.3",
     "com.audune.utils.types": "1.0.3",
     "com.audune.utils.unityeditor": "2.0.7"
   }
