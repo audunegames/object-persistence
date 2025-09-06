@@ -23,6 +23,10 @@ namespace Audune.Persistence
 
     // Internal state of the persistence system
     private Serializer _serializer;
+
+
+    // Return the serializer of the persistence system
+    public Serializer serializer => _serializer;
     
 
     // Event that is triggered when a file is read

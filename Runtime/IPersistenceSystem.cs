@@ -8,6 +8,10 @@ namespace Audune.Persistence
   // Interface that defines a persistence system
   public interface IPersistenceSystem
   {
+    // Return the serializer of the persistence system
+    public Serializer serializer { get; }
+    
+
     // Event that is triggered when a file is read
     public event Action<File> onFileRead;
 
