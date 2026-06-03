@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [2.0.0] - 2026-06-03
+
+### Changed
+
+- Changed com.audune.serialization package version to 2.0.1, which is a major version bump.
+
+### Fixed
+
+- Fixed UPM CLI installation path in sign and release workflow to avoid adding it to the package.
+
 ## [1.0.4] - 2026-05-18
 
 ### Security
 
-- Added sign and release workflow to sign and release an UPM package when a Git tag is pushed.
+- Added sign and release workflow to sign and release a UPM package when a Git tag is pushed.
 
 ## [1.0.3] - 2025-09-06
 
